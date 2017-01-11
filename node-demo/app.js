@@ -16,5 +16,9 @@ app.get('/test', (req, resp) => {
 });
 
 app.listen(3000).on('listening', () => {
-    consul.agent.service.register({name: 'node-demo'});
+    consul.agent.service.register({name: 'node-demo'}, (err) => {
+        if (err) {
+            console.error(err);
+        }
+    });
 });

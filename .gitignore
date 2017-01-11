@@ -1,2 +1,5 @@
 .idea/
 node-demo/node_modules
+**/*.log
+**/*.iml
+java-demo/target
