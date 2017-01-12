@@ -3,6 +3,7 @@ const msb = require('msb');
 const consul = require('consul')();
 
 const NAMESPACE = 'service:discovery:demo';
+const PORT = Number(process.env.NODE_DEMO_PORT) || 3002;
 
 const app = express();
 
@@ -16,11 +17,21 @@ app.get('/test', (req, resp) => {
 });
 
 app.get('/health', (req, resp) => {
-    resp.status(200).end();
+    resp.status(200).json({status: 'UP'});
 });
 
-const server = app.listen(3002).on('listening', () => {
-    consul.agent.service.register({name: 'node-demo'}, (err) => {
+const server = app.listen(PORT).on('listening', () => {
+    consul.agent.service.register({
+        name: 'node-demo',
+        address: '172.28.96.33',
+        port: PORT,
+        check: {
+            name: 'HTTP API',
+            http: `http://172.28.96.33:${PORT}/health`,
+            interval: '15s',
+            timeout: '1s'
+        }
+    }, (err) => {
         if (err) {
             console.error(err);
         }
