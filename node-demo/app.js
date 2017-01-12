@@ -15,10 +15,26 @@ app.get('/test', (req, resp) => {
     });
 });
 
-app.listen(3000).on('listening', () => {
+app.get('/health', (req, resp) => {
+    resp.status(200).end();
+});
+
+const server = app.listen(3002).on('listening', () => {
     consul.agent.service.register({name: 'node-demo'}, (err) => {
         if (err) {
             console.error(err);
         }
+        console.log('Registered in Consul');
     });
 });
+
+process.on('SIGTERM', shutdown);
+process.on('SIGINT', shutdown);
+
+function shutdown() {
+    server.close();
+    consul.agent.service.deregister('node-demo', () => {
+        console.log('Deregistered from Consul');
+        process.exit(0);
+    });
+}
