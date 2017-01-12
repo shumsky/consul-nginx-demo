@@ -22,6 +22,7 @@ app.get('/health', (req, resp) => {
 
 const server = app.listen(PORT).on('listening', () => {
     consul.agent.service.register({
+        id: `node-demo-${PORT}`,
         name: 'node-demo',
         address: '172.28.96.33',
         port: PORT,
@@ -44,7 +45,7 @@ process.on('SIGINT', shutdown);
 
 function shutdown() {
     server.close();
-    consul.agent.service.deregister('node-demo', () => {
+    consul.agent.service.deregister(`node-demo-${PORT}`, () => {
         console.log('Deregistered from Consul');
         process.exit(0);
     });
