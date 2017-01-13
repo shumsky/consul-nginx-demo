@@ -1,5 +1,5 @@
 .idea/
-node-demo/node_modules
+node-ping/node_modules
 **/*.log
 **/*.iml
-java-demo/target
+java-pong/target

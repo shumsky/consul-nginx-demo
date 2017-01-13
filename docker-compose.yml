@@ -1,17 +1,41 @@
 version: '2'
 services:
-  java-demo:
-    build: ./java-demo
-  node-demo:
-    build: ./node-demo
-    ports:
-    - "3000:3000"
   consul:
     image: consul
     ports:
     - "8500:8500"
-    - "8600:8600"
+    - "8600:8600/udp"
   rabbit:
     image: rabbitmq
     ports:
     - "5672:5672"
+  node-ping-1:
+    build: ./node-ping
+    ports:
+    - "3006:3006"
+    links:
+    - consul
+    - rabbit
+    environment:
+    - CONSUL_HOST=consul
+    - MSB_BROKER_HOST=rabbit
+    - HTTP_PORT=3006
+  node-ping-2:
+    build: ./node-ping
+    ports:
+    - "3007:3007"
+    links:
+    - consul
+    - rabbit
+    environment:
+    - CONSUL_HOST=consul
+    - MSB_BROKER_HOST=rabbit
+    - HTTP_PORT=3007
+  java-pong:
+    build: ./java-pong
+    links:
+    - consul
+    - rabbit
+    environment:
+    - SPRING_CLOUD_CONSUL_HOST=consul
+    - MSB_BROKER_HOST=rabbit

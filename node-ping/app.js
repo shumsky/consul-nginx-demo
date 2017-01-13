@@ -1,18 +1,22 @@
 const express = require('express');
 const msb = require('msb');
-const consul = require('consul')();
+const consul = require('consul')(process.env.CONSUL_HOST ? {host: process.env.CONSUL_HOST} : undefined);
 
 const NAMESPACE = 'service:discovery:demo';
-const PORT = Number(process.env.NODE_DEMO_PORT) || 3002;
+const PORT = Number(process.env.HTTP_PORT) || 3002;
 
 const app = express();
 
-app.get('/test', (req, resp) => {
-    msb.request(NAMESPACE, 'hello', (err, payload) => {
+app.get('/ping', (req, resp) => {
+    msb.request(NAMESPACE, 'ping', (err, payload) => {
         if (err) {
             return resp.status(500).end();
         }
-        resp.status(200).json(payload);
+        const response = {
+            from: `node-ping-${PORT}`,
+            message: payload
+        };
+        resp.status(200).json(response);
     });
 });
 
@@ -22,8 +26,8 @@ app.get('/health', (req, resp) => {
 
 const server = app.listen(PORT).on('listening', () => {
     consul.agent.service.register({
-        id: `node-demo-${PORT}`,
-        name: 'node-demo',
+        id: `node-ping-${PORT}`,
+        name: 'node-ping',
         address: '172.28.96.33',
         port: PORT,
         check: {
@@ -45,7 +49,7 @@ process.on('SIGINT', shutdown);
 
 function shutdown() {
     server.close();
-    consul.agent.service.deregister(`node-demo-${PORT}`, () => {
+    consul.agent.service.deregister(`node-ping-${PORT}`, () => {
         console.log('Deregistered from Consul');
         process.exit(0);
     });

@@ -13,7 +13,7 @@ import javax.annotation.PostConstruct;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-public class JavaDemo {
+public class JavaPong {
 
     @Autowired
     private MsbContext msbContext;
@@ -25,10 +25,10 @@ public class JavaDemo {
         objectFactory.createResponderServer(
                 "service:discovery:demo",
                 new ResponderOptions.Builder().withMessageTemplate(new MessageTemplate()).build(),
-                (request, responder) -> responder.getResponder().send("hello back"), String.class).listen();
+                (request, responder) -> responder.getResponder().send("pong"), String.class).listen();
     }
 
     public static void main(String[] args) {
-        SpringApplication.run(JavaDemo.class, args);
+        SpringApplication.run(JavaPong.class, args);
     }
 }

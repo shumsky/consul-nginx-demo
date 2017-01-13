@@ -2,4 +2,4 @@ spring:
   cloud:
     consul:
       discovery:
-        service-name: "java-demo"
+        service-name: "java-pong"
