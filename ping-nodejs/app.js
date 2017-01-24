@@ -1,6 +1,7 @@
 const express = require('express');
 const msb = require('msb');
 const consul = require('consul')(process.env.CONSUL_HOST ? {host: process.env.CONSUL_HOST} : undefined);
+const ip = require('ip');
 
 const NAMESPACE = 'service:discovery:demo';
 const PORT = Number(process.env.HTTP_PORT) || 3002;
@@ -28,11 +29,11 @@ const server = app.listen(PORT).on('listening', () => {
     consul.agent.service.register({
         id: `ping-nodejs-${PORT}`,
         name: 'ping-nodejs',
-        address: '172.28.96.33',
+        address: ip.address(),
         port: PORT,
         check: {
             name: 'HTTP API',
-            http: `http://172.28.96.33:${PORT}/health`,
+            http: `http://${ip.address()}:${PORT}/health`,
             interval: '15s',
             timeout: '1s'
         }
