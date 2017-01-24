@@ -4,7 +4,6 @@ const consul = require('consul')(process.env.CONSUL_HOST ? {host: process.env.CO
 const ip = require('ip');
 
 const NAMESPACE = 'service:discovery:demo';
-const PORT = Number(process.env.HTTP_PORT) || 3002;
 
 const app = express();
 
@@ -14,7 +13,7 @@ app.get('/ping', (req, resp) => {
             return resp.status(500).end();
         }
         const response = {
-            from: `ping-nodejs-${PORT}`,
+            from: `ping-nodejs-${ip.address()}`,
             message: payload
         };
         resp.status(200).json(response);
@@ -25,15 +24,15 @@ app.get('/health', (req, resp) => {
     resp.status(200).json({status: 'UP'});
 });
 
-const server = app.listen(PORT).on('listening', () => {
+const server = app.listen(3000).on('listening', () => {
     consul.agent.service.register({
-        id: `ping-nodejs-${PORT}`,
+        id: `ping-nodejs-${ip.address()}`,
         name: 'ping-nodejs',
         address: ip.address(),
-        port: PORT,
+        port: 3000,
         check: {
             name: 'HTTP API',
-            http: `http://${ip.address()}:${PORT}/health`,
+            http: `http://${ip.address()}:3000/health`,
             interval: '15s',
             timeout: '1s'
         }
@@ -50,7 +49,7 @@ process.on('SIGINT', shutdown);
 
 function shutdown() {
     server.close();
-    consul.agent.service.deregister(`ping-nodejs-${PORT}`, () => {
+    consul.agent.service.deregister(`ping-nodejs-${PUBLIC_PORT}`, () => {
         console.log('Deregistered from Consul');
         process.exit(0);
     });

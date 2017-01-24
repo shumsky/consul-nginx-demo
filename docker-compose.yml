@@ -12,31 +12,29 @@ services:
   nginx-consul:
     build: ./nginx-consul
     ports:
-    - "8085:80"
+    - "8050:80"
     depends_on:
     - consul
   ping-nodejs-1:
     build: ./ping-nodejs
     ports:
-    - "3006:3006"
+    - "3006:3000"
     links:
     - consul
     - rabbit
     environment:
     - CONSUL_HOST=consul
     - MSB_BROKER_HOST=rabbit
-    - HTTP_PORT=3006
   ping-nodejs-2:
     build: ./ping-nodejs
     ports:
-    - "3007:3007"
+    - "3007:3000"
     links:
     - consul
     - rabbit
     environment:
     - CONSUL_HOST=consul
     - MSB_BROKER_HOST=rabbit
-    - HTTP_PORT=3007
   pong-java:
     build: ./pong-java
     links:
