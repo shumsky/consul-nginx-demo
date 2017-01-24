@@ -1,0 +1,19 @@
+events { }
+
+http {
+    upstream node-ping-backend {
+        {{range service "node-ping"}}
+        server {{.Address}}:{{.Port}};
+        {{else}}
+        server 127.0.0.1:65535; // returns 502 error
+        {{end}}
+    }
+
+    server {
+        listen 80;
+
+        location / {
+            proxy_pass http://node-ping-backend;
+        }
+    }
+}

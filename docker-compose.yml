@@ -9,6 +9,12 @@ services:
     image: rabbitmq
     ports:
     - "5672:5672"
+  nginx-consul:
+    build: ./nginx-consul
+    ports:
+    - "8085:80"
+    depends_on:
+    - consul
   node-ping-1:
     build: ./node-ping
     ports:
