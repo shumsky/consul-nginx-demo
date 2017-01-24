@@ -13,7 +13,7 @@ app.get('/ping', (req, resp) => {
             return resp.status(500).end();
         }
         const response = {
-            from: `node-ping-${PORT}`,
+            from: `ping-nodejs-${PORT}`,
             message: payload
         };
         resp.status(200).json(response);
@@ -26,8 +26,8 @@ app.get('/health', (req, resp) => {
 
 const server = app.listen(PORT).on('listening', () => {
     consul.agent.service.register({
-        id: `node-ping-${PORT}`,
-        name: 'node-ping',
+        id: `ping-nodejs-${PORT}`,
+        name: 'ping-nodejs',
         address: '172.28.96.33',
         port: PORT,
         check: {
@@ -49,7 +49,7 @@ process.on('SIGINT', shutdown);
 
 function shutdown() {
     server.close();
-    consul.agent.service.deregister(`node-ping-${PORT}`, () => {
+    consul.agent.service.deregister(`ping-nodejs-${PORT}`, () => {
         console.log('Deregistered from Consul');
         process.exit(0);
     });

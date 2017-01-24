@@ -1,5 +1,5 @@
 .idea/
-node-ping/node_modules
+ping-nodejs/node_modules
 **/*.log
 **/*.iml
-java-pong/target
+pong-java/target

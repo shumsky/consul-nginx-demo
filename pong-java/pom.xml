@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.springframework</groupId>
-    <artifactId>java-pong</artifactId>
+    <artifactId>pong-java</artifactId>
     <version>1.0.0</version>
 
     <parent>

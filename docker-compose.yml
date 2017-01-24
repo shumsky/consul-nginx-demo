@@ -15,8 +15,8 @@ services:
     - "8085:80"
     depends_on:
     - consul
-  node-ping-1:
-    build: ./node-ping
+  ping-nodejs-1:
+    build: ./ping-nodejs
     ports:
     - "3006:3006"
     links:
@@ -26,8 +26,8 @@ services:
     - CONSUL_HOST=consul
     - MSB_BROKER_HOST=rabbit
     - HTTP_PORT=3006
-  node-ping-2:
-    build: ./node-ping
+  ping-nodejs-2:
+    build: ./ping-nodejs
     ports:
     - "3007:3007"
     links:
@@ -37,8 +37,8 @@ services:
     - CONSUL_HOST=consul
     - MSB_BROKER_HOST=rabbit
     - HTTP_PORT=3007
-  java-pong:
-    build: ./java-pong
+  pong-java:
+    build: ./pong-java
     links:
     - consul
     - rabbit
