@@ -23,7 +23,7 @@ public class JavaPong {
         ObjectFactory objectFactory = msbContext.getObjectFactory();
 
         objectFactory.createResponderServer(
-                "service:discovery:demo",
+                "consul:demo",
                 new ResponderOptions.Builder().withMessageTemplate(new MessageTemplate()).build(),
                 (request, responder) -> responder.getResponder().send("pong"), String.class).listen();
     }

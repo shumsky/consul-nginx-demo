@@ -5,7 +5,7 @@ http {
         {{range service "ping-nodejs"}}
         server {{.Address}}:{{.Port}};
         {{else}}
-        server 127.0.0.1:65535; # returns 502 error
+        server 127.0.0.1:65535; # no service instances have registered yet, return 502 error
         {{end}}
     }
 
