@@ -26,9 +26,10 @@ process.on('SIGTERM', shutdown);
 process.on('SIGINT', shutdown);
 
 function shutdown() {
-    server.close();
-    consul.agent.service.deregister(SERVICE_ID, () => {
-        console.log('Deregistered from Consul');
-        process.exit(0);
+    server.close(() => {
+        consul.agent.service.deregister(SERVICE_ID, () => {
+            console.log('Deregistered from Consul');
+            process.exit(0);
+        });
     });
 }

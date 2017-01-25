@@ -6,9 +6,10 @@ services:
     - "8500:8500"
     - "8600:8600/udp"
   rabbit:
-    image: rabbitmq
+    image: rabbitmq:management
     ports:
     - "5672:5672"
+    - "15872:15672"
   nginx-consul:
     build: ./nginx-consul
     ports:

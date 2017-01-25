@@ -2,7 +2,7 @@ const msb = require('msb');
 const express = require('express');
 const ip = require('ip');
 
-const NAMESPACE = 'consul:demo';
+const NAMESPACE = process.env.NAMESPACE || 'consul:demo';
 
 module.exports = router = express.Router();
 
