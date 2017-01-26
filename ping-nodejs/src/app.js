@@ -16,7 +16,7 @@ const server = app.listen(3000).on('listening', () => {
         check: {
             name: 'HTTP API',
             http: `http://${ip.address()}:3000/health`,
-            interval: '15s',
+            interval: '10s',
             timeout: '1s'
         }
     }, () => console.log('Registered in Consul'));

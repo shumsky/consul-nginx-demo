@@ -4,7 +4,7 @@ services:
     image: consul
     ports:
     - "8500:8500"
-    - "8600:8600/udp"
+    - "53:8600/udp"
   rabbit:
     image: rabbitmq:management
     ports:
@@ -16,6 +16,25 @@ services:
     - "8050:80"
     depends_on:
     - consul
+  kong:
+    image: kong
+    dns: 172.28.96.33
+    ports:
+    - "8000:8000"
+    - "8001:8001"
+    environment:
+    - KONG_DATABASE=postgres
+    - KONG_PG_HOST=kong-db
+    depends_on:
+    - kong-db
+    - consul
+  kong-db:
+    image: postgres
+    ports:
+    - "5432:5432"
+    environment:
+    - POSTGRES_USER=kong
+    - POSTGRES_DB=kong
   ping-nodejs-1:
     build: ./ping-nodejs
     ports:
