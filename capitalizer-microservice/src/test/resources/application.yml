@@ -2,4 +2,4 @@ spring:
   cloud:
     consul:
       discovery:
-        service-name: "pong-java"
+        enabled: false

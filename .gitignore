@@ -2,4 +2,4 @@
 ping-nodejs/node_modules
 **/*.log
 **/*.iml
-pong-java/target
+capitalizer-microservice/target
