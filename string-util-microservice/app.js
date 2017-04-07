@@ -1,16 +1,24 @@
 const consul = require('consul')(process.env.CONSUL_HOST ? {host: process.env.CONSUL_HOST} : undefined);
 const ip = require('ip');
 const app = require('express')();
-const routes = require('./routes');
 
-const SERVICE_ID = `ping-nodejs-${ip.address()}`;
+const SERVICE_ID = 'string-util-microservice-0';
 
-app.use('/', routes);
+app.get('/to-upper-case', (req, resp) => {
+  request('http://localhost:8080/capitalize', (err, result) => {
+      if (err) return resp.status(500).end();
+      resp.send(result);
+  });
+});
+
+app.get('/health', (req, resp) => {
+  resp.status(200).json({status: 'UP'});
+});
 
 const server = app.listen(3000).on('listening', () => {
     consul.agent.service.register({
         id: SERVICE_ID,
-        name: 'ping-nodejs',
+        name: 'string-util-microservice',
         address: ip.address(),
         port: 3000,
         check: {
@@ -19,7 +27,13 @@ const server = app.listen(3000).on('listening', () => {
             interval: '10s',
             timeout: '1s'
         }
-    }, () => console.log('Registered in Consul'));
+    }, (err) => {
+        if (err) {
+            console.log('Failed to register in Consul');
+            return;
+        }
+        console.log('Registered in Consul')
+    });
 });
 
 process.on('SIGTERM', shutdown);

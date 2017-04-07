@@ -1,5 +1,5 @@
 .idea/
-ping-nodejs/node_modules
+string-util-microservice/node_modules
 **/*.log
 **/*.iml
 capitalizer-microservice/target

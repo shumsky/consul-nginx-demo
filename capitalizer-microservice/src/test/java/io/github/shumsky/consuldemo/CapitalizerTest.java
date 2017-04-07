@@ -20,14 +20,12 @@ public class CapitalizerTest {
     @Test
     public void testCapitalize() {
         String capitalized = restTemplate.getForObject("/capitalize?text={text}", String.class, "it works!");
-        System.out.println(capitalized);
         assert capitalized.equals("IT WORKS!");
     }
 
     @Test
     public void testCapitalizeBadRequest() {
         ResponseEntity<String> response = restTemplate.getForEntity("/capitalize", String.class);
-        System.out.println(response.getStatusCode());
         assert response.getStatusCode() == HttpStatus.BAD_REQUEST;
     }
 }

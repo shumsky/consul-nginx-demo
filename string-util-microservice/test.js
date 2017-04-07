@@ -1,0 +1,2 @@
+describe('string-util-microservice', () => {
+});

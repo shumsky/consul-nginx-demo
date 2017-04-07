@@ -1,11 +1,11 @@
 {
-  "name": "ping-nodejs",
+  "name": "string-util-microservice",
   "version": "1.0.0",
   "description": "",
-  "main": "src/app.js",
+  "main": "./app.js",
   "scripts": {
-    "start": "node src/app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node ./app.js",
+    "test": "mocha ./test.js"
   },
   "author": "",
   "license": "ISC",
@@ -13,7 +13,9 @@
     "consul": "^0.27.0",
     "express": "^4.14.0",
     "ip": "^1.1.4",
-    "koa": "^1.2.4",
-    "msb": "^1.0.0"
+    "request": "^2.81.0"
+  },
+  "devDependencies": {
+    "mocha": "^3.2.0"
   }
 }

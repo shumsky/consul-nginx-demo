@@ -12,7 +12,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @RestController("/capitalize")
 public class Capitalizer {
 
-    @GetMapping(produces = "text/plain")
+    @GetMapping
     public String capitalize(@RequestParam("text") String text) {
         return text.toUpperCase();
     }
