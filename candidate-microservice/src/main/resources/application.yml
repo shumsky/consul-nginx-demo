@@ -5,4 +5,3 @@ spring:
         enabled: true
         service-name: candidate-microservice
         instanceId: candidate-microservice-${random.value}
-candidate-name: no-name

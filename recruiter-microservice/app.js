@@ -9,7 +9,8 @@ app.get('/find', (req, resp) => {
       console.error(`Failed to request candidate: ${err}`);
       return resp.status(500).end();
     }
-    resp.send(result.body);
+    resp.send(`Hi, this is ${process.env.RECRUITER_NAME || 'anonymous-recruiter'}. 
+               I've found a candidate for you. Here's what they say: ${result.body}`);
   });
 });
 

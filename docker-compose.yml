@@ -19,6 +19,7 @@ services:
     environment:
     - CONSUL_HOST=consul
     - CANDIDATE_URL=http://nginx-consul
+    - RECRUITER_NAME=Helen
   recruiter-microservice-2:
     build: ./recruiter-microservice
     links:
@@ -27,15 +28,18 @@ services:
     environment:
     - CONSUL_HOST=consul
     - CANDIDATE_URL=http://nginx-consul
+    - RECRUITER_NAME=Gill
   candidate-microservice-1:
     build: ./candidate-microservice
     links:
     - consul
     environment:
     - SPRING_CLOUD_CONSUL_HOST=consul
+    - CANDIDATE_NAME=Amos
   candidate-microservice-2:
     build: ./candidate-microservice
     links:
     - consul
     environment:
     - SPRING_CLOUD_CONSUL_HOST=consul
+    - CANDIDATE_NAME=Katarina
