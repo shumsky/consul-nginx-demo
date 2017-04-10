@@ -11,30 +11,30 @@ services:
     - "8081:81"
     depends_on:
     - consul
-  string-util-microservice-1:
-    build: ./string-util-microservice
+  recruiter-microservice-1:
+    build: ./recruiter-microservice
     links:
     - consul
     - nginx-consul
     environment:
     - CONSUL_HOST=consul
-    - CAPITALIZER_URL=http://nginx-consul
-  string-util-microservice-2:
-    build: ./string-util-microservice
+    - CANDIDATE_URL=http://nginx-consul
+  recruiter-microservice-2:
+    build: ./recruiter-microservice
     links:
     - consul
     - nginx-consul
     environment:
     - CONSUL_HOST=consul
-    - CAPITALIZER_URL=http://nginx-consul
-  capitalizer-microservice-1:
-    build: ./capitalizer-microservice
+    - CANDIDATE_URL=http://nginx-consul
+  candidate-microservice-1:
+    build: ./candidate-microservice
     links:
     - consul
     environment:
     - SPRING_CLOUD_CONSUL_HOST=consul
-  capitalizer-microservice-2:
-    build: ./capitalizer-microservice
+  candidate-microservice-2:
+    build: ./candidate-microservice
     links:
     - consul
     environment:

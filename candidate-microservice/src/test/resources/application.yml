@@ -3,3 +3,4 @@ spring:
     consul:
       discovery:
         enabled: false
+candidate-name: JUnit

@@ -3,12 +3,10 @@ const request = require('request');
 const ip = require('ip');
 const app = require('express')();
 
-const SERVICE_ID = `string-util-microservice-${Math.ceil(Math.random() * 999999)}`;
-
-app.get('/to-upper-case', (req, resp) => {
-  request(`${process.env.CAPITALIZER_URL}/capitalize?text=${req.query.text}`, (err, result) => {
+app.get('/find', (req, resp) => {
+  request(`${process.env.CANDIDATE_URL}/about`, (err, result) => {
     if (err) {
-      console.error(`Failed to invoke capitalizer: ${err}`);
+      console.error(`Failed to request candidate: ${err}`);
       return resp.status(500).end();
     }
     resp.send(result.body);
@@ -21,8 +19,8 @@ app.get('/health', (req, resp) => {
 
 const server = app.listen(3000).on('listening', () => {
   consul.agent.service.register({
-    id: SERVICE_ID,
-    name: 'string-util-microservice',
+    id: `recruiter-microservice-${Math.ceil(Math.random() * 999999)}`,
+    name: 'recruiter-microservice',
     address: ip.address(),
     port: 3000,
     check: {
@@ -45,7 +43,7 @@ process.on('SIGINT', shutdown);
 
 function shutdown() {
   server.close(() => {
-    consul.agent.service.deregister(SERVICE_ID, () => {
+    consul.agent.service.deregister(`recruiter-${Math.ceil(Math.random() * 999999)}`, () => {
       console.log('Deregistered from Consul');
       process.exit(0);
     });

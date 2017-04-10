@@ -1,16 +1,16 @@
 events { }
 
 http {
-    upstream string-util-microservice-backend {
-        {{range service "string-util-microservice"}}
+    upstream recruiter-microservice-backend {
+        {{range service "recruiter-microservice"}}
         server {{.Address}}:{{.Port}};
         {{else}}
         server 127.0.0.1:65535; # no service instances have registered yet, return 502 error
         {{end}}
     }
 
-    upstream capitalizer-microservice-backend {
-        {{range service "capitalizer-microservice"}}
+    upstream candidate-microservice-backend {
+        {{range service "candidate-microservice"}}
         server {{.Address}}:{{.Port}};
         {{else}}
         server 127.0.0.1:65535; # no service instances have registered yet, return 502 error
@@ -20,14 +20,14 @@ http {
     server {
         listen 81;
         location / {
-            proxy_pass http://string-util-microservice-backend;
+            proxy_pass http://recruiter-microservice-backend;
         }
     }
 
     server {
         listen 80;
         location / {
-            proxy_pass http://capitalizer-microservice-backend;
+            proxy_pass http://candidate-microservice-backend;
         }
     }
 }

@@ -1,5 +1,5 @@
 .idea/
-string-util-microservice/node_modules
+**/node_modules
 **/*.log
 **/*.iml
-capitalizer-microservice/target
+**/target
