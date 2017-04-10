@@ -2,5 +2,6 @@ spring:
   cloud:
     consul:
       discovery:
+        enabled: true
         service-name: capitalizer-microservice
         instanceId: capitalizer-microservice-${random.value}

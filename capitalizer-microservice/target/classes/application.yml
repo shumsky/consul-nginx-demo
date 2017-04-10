@@ -1,6 +1,0 @@
-spring:
-  cloud:
-    consul:
-      discovery:
-        service-name: capitalizer-microservice
-        instanceId: capitalizer-microservice-${random.value}

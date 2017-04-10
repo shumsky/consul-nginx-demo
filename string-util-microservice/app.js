@@ -1,13 +1,14 @@
 const consul = require('consul')(process.env.CONSUL_HOST ? {host: process.env.CONSUL_HOST} : undefined);
+const request = require('request');
 const ip = require('ip');
 const app = require('express')();
 
 const SERVICE_ID = 'string-util-microservice-0';
 
 app.get('/to-upper-case', (req, resp) => {
-  request('http://localhost:8080/capitalize', (err, result) => {
+  request(`http://${process.env.CAPITALIZER_HOST}:8080/capitalize?text=${req.query.text}`, (err, result) => {
       if (err) return resp.status(500).end();
-      resp.send(result);
+      resp.send(result.body);
   });
 });
 
@@ -29,7 +30,7 @@ const server = app.listen(3000).on('listening', () => {
         }
     }, (err) => {
         if (err) {
-            console.log('Failed to register in Consul');
+            console.log(`Failed to register in Consul: ${err}`);
             return;
         }
         console.log('Registered in Consul')
