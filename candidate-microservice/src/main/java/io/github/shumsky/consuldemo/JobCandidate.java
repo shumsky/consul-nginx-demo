@@ -16,13 +16,8 @@ public class JobCandidate {
 
     private String candidateName = "anonymous-candidate";
 
-    @PostConstruct
-    private void init() {
-        int a = 0;
-    }
-
     @GetMapping("/about")
-    public String info() {
+    public String about() {
         return "Hello. My name is " + candidateName + ". I want to develop awesome microservices!";
     }
 

@@ -1,6 +1,2 @@
-spring:
-  cloud:
-    consul:
-      discovery:
-        enabled: false
+spring.cloud.consul.discovery.enabled: false
 candidate-name: JUnit
