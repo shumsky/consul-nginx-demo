@@ -3,12 +3,15 @@ const request = require('request');
 const ip = require('ip');
 const app = require('express')();
 
-const SERVICE_ID = 'string-util-microservice-0';
+const SERVICE_ID = `string-util-microservice-${Math.ceil(Math.random() * 999999)}`;
 
 app.get('/to-upper-case', (req, resp) => {
-  request(`http://${process.env.CAPITALIZER_HOST}:8080/capitalize?text=${req.query.text}`, (err, result) => {
-      if (err) return resp.status(500).end();
-      resp.send(result.body);
+  request(`${process.env.CAPITALIZER_URL}/capitalize?text=${req.query.text}`, (err, result) => {
+    if (err) {
+      console.error(`Failed to invoke capitalizer: ${err}`);
+      return resp.status(500).end();
+    }
+    resp.send(result.body);
   });
 });
 
@@ -17,34 +20,34 @@ app.get('/health', (req, resp) => {
 });
 
 const server = app.listen(3000).on('listening', () => {
-    consul.agent.service.register({
-        id: SERVICE_ID,
-        name: 'string-util-microservice',
-        address: ip.address(),
-        port: 3000,
-        check: {
-            name: 'HTTP API',
-            http: `http://${ip.address()}:3000/health`,
-            interval: '10s',
-            timeout: '1s'
-        }
-    }, (err) => {
-        if (err) {
-            console.log(`Failed to register in Consul: ${err}`);
-            return;
-        }
-        console.log('Registered in Consul')
-    });
+  consul.agent.service.register({
+    id: SERVICE_ID,
+    name: 'string-util-microservice',
+    address: ip.address(),
+    port: 3000,
+    check: {
+      name: 'HTTP API',
+      http: `http://${ip.address()}:3000/health`,
+      interval: '10s',
+      timeout: '1s'
+    }
+  }, (err) => {
+    if (err) {
+      console.error(`Failed to register in Consul: ${err}`);
+      return;
+    }
+    console.log('Registered in Consul')
+  });
 });
 
 process.on('SIGTERM', shutdown);
 process.on('SIGINT', shutdown);
 
 function shutdown() {
-    server.close(() => {
-        consul.agent.service.deregister(SERVICE_ID, () => {
-            console.log('Deregistered from Consul');
-            process.exit(0);
-        });
+  server.close(() => {
+    consul.agent.service.deregister(SERVICE_ID, () => {
+      console.log('Deregistered from Consul');
+      process.exit(0);
     });
+  });
 }

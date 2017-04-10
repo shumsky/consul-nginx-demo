@@ -4,62 +4,38 @@ services:
     image: consul
     ports:
     - "8500:8500"
-    - "53:8600/udp"
-  rabbit:
-    image: rabbitmq:management
-    ports:
-    - "5672:5672"
-    - "15872:15672"
   nginx-consul:
     build: ./nginx-consul
     ports:
-    - "8050:80"
+    - "8080:80"
+    - "8081:81"
     depends_on:
     - consul
-  kong:
-    image: kong
-    dns: 172.28.96.33
-    ports:
-    - "8000:8000"
-    - "8001:8001"
-    environment:
-    - KONG_DATABASE=postgres
-    - KONG_PG_HOST=kong-db
-    depends_on:
-    - kong-db
-    - consul
-  kong-db:
-    image: postgres
-    ports:
-    - "5432:5432"
-    environment:
-    - POSTGRES_USER=kong
-    - POSTGRES_DB=kong
-  ping-nodejs-1:
-    build: ./ping-nodejs
-    ports:
-    - "3006:3000"
+  string-util-microservice-1:
+    build: ./string-util-microservice
     links:
     - consul
-    - rabbit
+    - nginx-consul
     environment:
     - CONSUL_HOST=consul
-    - MSB_BROKER_HOST=rabbit
-  ping-nodejs-2:
-    build: ./ping-nodejs
-    ports:
-    - "3007:3000"
+    - CAPITALIZER_URL=http://nginx-consul
+  string-util-microservice-2:
+    build: ./string-util-microservice
     links:
     - consul
-    - rabbit
+    - nginx-consul
     environment:
     - CONSUL_HOST=consul
-    - MSB_BROKER_HOST=rabbit
-  pong-java:
-    build: ./pong-java
+    - CAPITALIZER_URL=http://nginx-consul
+  capitalizer-microservice-1:
+    build: ./capitalizer-microservice
     links:
     - consul
-    - rabbit
     environment:
     - SPRING_CLOUD_CONSUL_HOST=consul
-    - MSB_BROKER_HOST=rabbit
+  capitalizer-microservice-2:
+    build: ./capitalizer-microservice
+    links:
+    - consul
+    environment:
+    - SPRING_CLOUD_CONSUL_HOST=consul
