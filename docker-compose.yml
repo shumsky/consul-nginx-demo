@@ -4,8 +4,8 @@ services:
     image: consul
     ports:
     - "8500:8500"
-  nginx-consul:
-    build: ./nginx-consul
+  router-nginx:
+    build: ./router-nginx
     ports:
     - "8080:80"
     - "8081:81"
@@ -15,19 +15,19 @@ services:
     build: ./recruiter-microservice
     links:
     - consul
-    - nginx-consul
+    - router-nginx
     environment:
     - CONSUL_HOST=consul
-    - CANDIDATE_URL=http://nginx-consul
+    - CANDIDATE_URL=http://router-nginx
     - RECRUITER_NAME=Helen
   recruiter-microservice-2:
     build: ./recruiter-microservice
     links:
     - consul
-    - nginx-consul
+    - router-nginx
     environment:
     - CONSUL_HOST=consul
-    - CANDIDATE_URL=http://nginx-consul
+    - CANDIDATE_URL=http://router-nginx
     - RECRUITER_NAME=Gill
   candidate-microservice-1:
     build: ./candidate-microservice
