@@ -7,3 +7,9 @@ The project includes:
 
 ![Flow](diagram.png)
  
+## How to run
+```
+gradle clean build
+docker-compose build
+docker-compose up
+```
