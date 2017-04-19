@@ -12,4 +12,5 @@ The project includes:
 gradle clean build
 docker-compose build
 docker-compose up
+curl http://localhost:8080/find
 ```
