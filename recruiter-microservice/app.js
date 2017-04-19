@@ -3,6 +3,8 @@ const request = require('request');
 const ip = require('ip');
 const app = require('express')();
 
+const serviceId = Math.ceil(Math.random() * 999999);
+
 app.get('/find', (req, resp) => {
   request(`${process.env.CANDIDATE_URL}/about`, (err, result) => {
     if (err) {
@@ -20,7 +22,7 @@ app.get('/health', (req, resp) => {
 
 const server = app.listen(3000).on('listening', () => {
   consul.agent.service.register({
-    id: `recruiter-microservice-${Math.ceil(Math.random() * 999999)}`,
+    id: `recruiter-microservice-${serviceId}`,
     name: 'recruiter-microservice',
     address: ip.address(),
     port: 3000,
@@ -44,7 +46,7 @@ process.on('SIGINT', shutdown);
 
 function shutdown() {
   server.close(() => {
-    consul.agent.service.deregister(`recruiter-${Math.ceil(Math.random() * 999999)}`, () => {
+    consul.agent.service.deregister(`recruiter-microservice-${serviceId}`, () => {
       console.log('Deregistered from Consul');
       process.exit(0);
     });

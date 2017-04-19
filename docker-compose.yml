@@ -7,8 +7,11 @@ services:
   router-nginx:
     build: ./router-nginx
     ports:
-    - "8080:80"
-    - "8081:81"
+    - "8080:8080"
+    - "8081:8081"
+    environment:
+    - RECRUITER_PORT=8080
+    - CANDIDATE_PORT=8081
     depends_on:
     - consul
   recruiter-microservice-1:
@@ -18,7 +21,7 @@ services:
     - router-nginx
     environment:
     - CONSUL_HOST=consul
-    - CANDIDATE_URL=http://router-nginx
+    - CANDIDATE_URL=http://router-nginx:8081
     - RECRUITER_NAME=Helen
   recruiter-microservice-2:
     build: ./recruiter-microservice
@@ -27,7 +30,7 @@ services:
     - router-nginx
     environment:
     - CONSUL_HOST=consul
-    - CANDIDATE_URL=http://router-nginx
+    - CANDIDATE_URL=http://router-nginx:8081
     - RECRUITER_NAME=Gill
   candidate-microservice-1:
     build: ./candidate-microservice
