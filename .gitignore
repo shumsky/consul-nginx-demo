@@ -1,5 +1,7 @@
 .idea/
+.gradle/
 **/*.iml
 **/node_modules
 **/target
+**/build
 **/*.log
