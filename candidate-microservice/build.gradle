@@ -1,16 +1,16 @@
 buildscript {
     repositories {
         maven {
-            url "https://plugins.gradle.org/m2/"
+            url 'https://plugins.gradle.org/m2/'
         }
     }
     dependencies {
-        classpath "org.springframework.boot:spring-boot-gradle-plugin:1.5.2.RELEASE"
+        classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.5.2.RELEASE'
     }
 }
 
-apply plugin: "org.springframework.boot"
-apply plugin: "java"
+apply plugin: 'org.springframework.boot'
+apply plugin: 'java'
 
 repositories {
     jcenter()
@@ -18,7 +18,7 @@ repositories {
 
 dependencyManagement {
     imports {
-        mavenBom "org.springframework.cloud:spring-cloud-dependencies:Dalston.RELEASE"
+        mavenBom 'org.springframework.cloud:spring-cloud-dependencies:Dalston.RELEASE'
     }
 }
 
